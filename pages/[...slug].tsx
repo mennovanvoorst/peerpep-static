@@ -6,6 +6,12 @@ import {
   useStoryblokState
 } from '@storyblok/react';
 
+type Params = {
+  params: {
+    slug: string;
+  };
+};
+
 type Props = {
   story: ISbStoryData;
   header: ISbStoryData;
@@ -26,9 +32,9 @@ const Home: NextPage<Props> = ({ story, header, footer }) => {
   );
 };
 
-export async function getStaticProps() {
+export async function getStaticProps({ params }: Params) {
   const storyblokApi = getStoryblokApi();
-  let { data } = await storyblokApi.get(`cdn/stories/home`, {
+  let { data } = await storyblokApi.get(`cdn/stories/${params.slug}`, {
     version: 'draft'
   });
 
@@ -47,6 +53,30 @@ export async function getStaticProps() {
       footer: footerData ? footerData.story : false
     },
     revalidate: 3600
+  };
+}
+
+export async function getStaticPaths() {
+  const storyblokApi = getStoryblokApi();
+  let { data } = await storyblokApi.get('cdn/links/', {
+    version: 'draft'
+  });
+
+  let paths: Params[] = [];
+  Object.keys(data.links).forEach((linkKey) => {
+    if (data.links[linkKey].is_folder || data.links[linkKey].slug === 'home') {
+      return;
+    }
+
+    const slug = data.links[linkKey].slug;
+    let splittedSlug = slug.split('/');
+
+    paths.push({ params: { slug: splittedSlug } });
+  });
+
+  return {
+    paths: paths,
+    fallback: false
   };
 }
 

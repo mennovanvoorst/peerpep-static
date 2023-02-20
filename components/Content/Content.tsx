@@ -26,8 +26,8 @@ export const Content = ({ blok }: Props) => (
     className={twMerge(
       classNames({
         'bg-backgroundPurple': blok.background,
-        'pt-28': blok.topPadding,
-        'pb-28': blok.bottomPadding
+        'pt-24': blok.topPadding,
+        'pb-24': blok.bottomPadding
       })
     )}
   >

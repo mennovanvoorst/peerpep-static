@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const Brands = ({ blok }: Props) => (
-  <ul className="w-full flex gap-8 justify-center align-center">
+  <ul className="w-full flex flex-wrap gap-8 justify-center align-center">
     {blok.brands &&
       blok.brands.map((nestedBrand) => (
         <StoryblokComponent blok={nestedBrand} key={nestedBrand._uid} />

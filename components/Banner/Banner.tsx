@@ -53,7 +53,7 @@ export const Banner = ({ blok }: Props) => {
               alt="Mockup"
               width={800}
               height={800}
-              className="w-full h-auto"
+              className="w-auto h-auto md:h-[350px] lg:h-[450px] mx-auto"
             />
           </span>
         )}

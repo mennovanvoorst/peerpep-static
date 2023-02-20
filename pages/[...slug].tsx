@@ -5,49 +5,58 @@ import {
   getStoryblokApi,
   useStoryblokState
 } from '@storyblok/react';
+import { ISbStoryParams } from '@storyblok/react';
 
 type Params = {
   params: {
     slug: string;
   };
+  locale: Locale;
 };
 
 type Props = {
   story: ISbStoryData;
   header: ISbStoryData;
   footer: ISbStoryData;
+  locale: Locale;
 };
 
-const Home: NextPage<Props> = ({ story, header, footer }) => {
-  story = useStoryblokState(story);
-  header = useStoryblokState(header);
-  footer = useStoryblokState(footer);
+const Home: NextPage<Props> = ({ story, header, footer, locale }) => {
+  story = useStoryblokState(story, { language: locale });
+  header = useStoryblokState(header, { language: locale });
+  footer = useStoryblokState(footer, { language: locale });
 
   return (
     <>
-      <StoryblokComponent blok={header.content} />
-      <StoryblokComponent blok={story.content} />
-      <StoryblokComponent blok={footer.content} />
+      <StoryblokComponent blok={header.content} locale={locale} />
+      <StoryblokComponent blok={story.content} locale={locale} />
+      <StoryblokComponent blok={footer.content} locale={locale} />
     </>
   );
 };
 
-export async function getStaticProps({ params }: Params) {
+export async function getStaticProps({ params, locale }: Params) {
   const storyblokApi = getStoryblokApi();
-  let { data } = await storyblokApi.get(`cdn/stories/${params.slug}`, {
-    version: 'draft'
-  });
+  const sbParams: ISbStoryParams = {
+    version: 'draft',
+    language: locale
+  };
 
-  let { data: headerData } = await storyblokApi.get(`cdn/stories/header`, {
-    version: 'draft'
-  });
+  let { data } = await storyblokApi.get(`cdn/stories/${params.slug}`, sbParams);
 
-  let { data: footerData } = await storyblokApi.get(`cdn/stories/footer`, {
-    version: 'draft'
-  });
+  let { data: headerData } = await storyblokApi.get(
+    `cdn/stories/header`,
+    sbParams
+  );
+
+  let { data: footerData } = await storyblokApi.get(
+    `cdn/stories/footer`,
+    sbParams
+  );
 
   return {
     props: {
+      locale,
       story: data ? data.story : false,
       header: headerData ? headerData.story : false,
       footer: footerData ? footerData.story : false
@@ -56,7 +65,7 @@ export async function getStaticProps({ params }: Params) {
   };
 }
 
-export async function getStaticPaths() {
+export async function getStaticPaths({ locales }: { locales: Locale[] }) {
   const storyblokApi = getStoryblokApi();
   let { data } = await storyblokApi.get('cdn/links/', {
     version: 'draft'
@@ -71,7 +80,12 @@ export async function getStaticPaths() {
     const slug = data.links[linkKey].slug;
     let splittedSlug = slug.split('/');
 
-    paths.push({ params: { slug: splittedSlug } });
+    for (const locale of locales) {
+      paths.push({
+        params: { slug: splittedSlug },
+        locale
+      });
+    }
   });
 
   return {

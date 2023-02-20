@@ -4,12 +4,14 @@ import { twMerge } from 'tailwind-merge';
 import { useRouter } from 'next/router';
 import { StoryblokComponent } from '@storyblok/react';
 import { NavLink } from '../NavLink';
+import { LanguageSelector } from '../LanguageSelector';
 
 type Props = {
   items: NavLink[];
+  locale: Locale;
 };
 
-export const NavList = ({ items }: Props) => {
+export const NavList = ({ items, locale }: Props) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
@@ -50,6 +52,8 @@ export const NavList = ({ items }: Props) => {
                   activePath={router.asPath}
                 />
               ))}
+
+            <LanguageSelector locale={locale} />
           </ul>
         </div>
       </nav>

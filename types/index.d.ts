@@ -7,3 +7,5 @@ interface SbColorPickerData {
 }
 
 type HrefTarget = '_self' | '_blank' | '_parent' | '_top';
+
+type Locale = 'en' | 'nl';

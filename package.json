@@ -8,6 +8,7 @@
     "proxy": "mkcert -install && mkcert localhost && local-ssl-proxy --source 3010 --target 3000 --cert localhost.pem --key localhost-key.pem"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.11",
     "@next/font": "^13.1.2",
     "@storyblok/react": "^2.0.3",
     "axios": "^1.2.2",

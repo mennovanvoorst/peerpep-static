@@ -79,16 +79,19 @@ export const Content = ({ blok }: Props) => (
 
       {blok.image?.filename && blok.imageAlt && (
         <div
-          className={classNames('relative w-full h-full', {
-            'row-start-1 row-span-1 col-span-full md:col-start-1 md:col-span-1 md:row-span-full':
-              blok.image?.filename && blok.imagePosition === 'left',
-            'row-start-1 row-span-1 col-span-full md:col-start-2 md:col-span-1 md:row-span-full':
-              blok.image?.filename && blok.imagePosition === 'right',
-            'row-start-1 row-span-1 col-span-full':
-              blok.image?.filename && blok.imagePosition === 'top',
-            'row-start-2 row-span-1 col-span-full':
-              blok.image?.filename && blok.imagePosition === 'bottom'
-          })}
+          className={classNames(
+            'relative w-full h-full lg:min-h-[265px] min-h-[225px]',
+            {
+              'row-start-1 row-span-1 col-span-full md:col-start-1 md:col-span-1 md:row-span-full':
+                blok.image?.filename && blok.imagePosition === 'left',
+              'row-start-1 row-span-1 col-span-full md:col-start-2 md:col-span-1 md:row-span-full':
+                blok.image?.filename && blok.imagePosition === 'right',
+              'row-start-1 row-span-1 col-span-full':
+                blok.image?.filename && blok.imagePosition === 'top',
+              'row-start-2 row-span-1 col-span-full':
+                blok.image?.filename && blok.imagePosition === 'bottom'
+            }
+          )}
         >
           <Image
             src={blok.image.filename}

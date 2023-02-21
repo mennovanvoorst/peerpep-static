@@ -17,22 +17,31 @@ type Props = {
 };
 
 export const Banner = ({ blok }: Props) => {
-  const backgroundImage = blok.backgroundImage?.filename
-    ? `linear-gradient(rgba(0, 0, 0, .4), rgba(0, 0, 0, .4)), url(${blok.backgroundImage.filename})`
-    : 'none';
-
-  const backgroundColor = blok.backgroundColor?.color
-    ? blok.backgroundColor.color
-    : 'transparent';
+  const backgroundColor =
+    blok.backgroundColor && !blok.backgroundImage
+      ? blok.backgroundColor.color
+      : 'inherit';
 
   return (
     <div
       className={classNames(
-        'flex justify-center items-center relative w-full bg-cover bg-center rounded-3xl'
+        'relative flex justify-center items-center w-full rounded-3xl overflow-hidden',
+        {
+          'bg-overlay': blok.backgroundImage
+        }
       )}
-      style={{ backgroundImage, backgroundColor }}
       {...storyblokEditable(blok)}
     >
+      {blok.backgroundImage && (
+        <Image
+          src={blok.backgroundImage?.filename}
+          alt="Banner image"
+          className="object-cover -z-10"
+          fill
+          quality={100}
+        />
+      )}
+
       <div className="flex flex-col justify-between text-white p-8 md:p-16 flex-1">
         {blok.title && <h2>{blok.title}</h2>}
         {blok.description && <p>{blok.description}</p>}

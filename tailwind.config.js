@@ -43,7 +43,8 @@ module.exports = {
           100: '#F2F0F9'
         },
         green: '#4FBB84',
-        backgroundPurple: '#F2F0F9'
+        backgroundPurple: '#F2F0F9',
+        overlay: 'rgba(0,0,0,0.4)'
       },
       fontFamily: {
         sans: ['Poppins', ...defaultTheme.fontFamily.sans]
